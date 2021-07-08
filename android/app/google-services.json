@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "670376144801",
+    "project_id": "grat-4aae6",
+    "storage_bucket": "grat-4aae6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670376144801:android:0ef6ff9cb4dcd00c6e65e0",
+        "android_client_info": {
+          "package_name": "com.grat.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670376144801-4daas3e4lfaufd4t1mu3a5ekdos1l8c7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0xRCos5sz1LjGTSQw9QbCa8hNhIuZme4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670376144801-4daas3e4lfaufd4t1mu3a5ekdos1l8c7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "670376144801-73daq2l31280vi3bc241a2mh1trm393r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.grat.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
