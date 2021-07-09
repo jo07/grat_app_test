@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:grat_app/components/rounded_btn.dart';
 import 'package:grat_app/screens/authenticate/login.dart';
-import 'package:grat_app/screens/success/success.dart';
+import 'package:grat_app/screens/home/home.dart';
+import 'package:grat_app/services/auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -13,7 +14,7 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   bool showSpinner = false;
-  final _auth = FirebaseAuth.instance;
+  final AuthService _auth = AuthService();
   String email;
   String password;
 
@@ -137,13 +138,12 @@ class _CreateAccountState extends State<CreateAccount> {
                       });
                       try {
                         final newUser =
-                        await _auth.createUserWithEmailAndPassword(
-                            email: email, password: password);
+                        await _auth.createUserWithEmailAndPassword(email, password);
                         if (newUser != null) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SuccessScreen()));
+                                  builder: (context) => HomeScreen()));
                         }
 
                         setState(() {

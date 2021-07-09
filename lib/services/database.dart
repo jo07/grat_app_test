@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grat_app/models/grat_user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class DatabaseService {
@@ -7,15 +9,15 @@ class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
 
-  final CollectionReference brewCollection = FirebaseFirestore.instance.collection('brews');
+  // final CollectionReference brewCollection = FirebaseFirestore.instance.collection('brews');
 
-  Future updateUserData(String sugar, String name, int strength) async {
-    return await brewCollection.doc(uid).set({
-      'sugars' : sugar,
-      'name' : name,
-      'strength' : strength,
-    });
-  }
+  // Future updateUserData(String sugar, String name, int strength) async {
+  //   return await brewCollection.doc(uid).set({
+  //     'sugars' : sugar,
+  //     'name' : name,
+  //     'strength' : strength,
+  //   });
+  // }
 
   // List<Brew> _brewListFromSnapshot (QuerySnapshot snapshot){
   //   return snapshot.docs.map((doc) {
@@ -47,4 +49,22 @@ class DatabaseService {
 //   Stream<CustomUserData> get customUserData {
 //     return brewCollection.doc(uid).snapshots().map(_customerUserDataFromSnapshot);
 //   }
+
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
  }

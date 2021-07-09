@@ -1,3 +1,4 @@
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grat_app/models/grat_user.dart';
 import 'package:grat_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,11 +42,11 @@ class AuthService {
       return null;
     }
   }
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future createUserWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user;
-      await DatabaseService(uid: user.uid).updateUserData('0', 'new crew member', 100);
+      // await DatabaseService(uid: user.uid).updateUserData('0', 'new crew member', 100);
       return _gratUserFromUser(user);
 
     } catch (e){
@@ -65,4 +66,30 @@ class AuthService {
       return null;
     }
   }
+
+  Future signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    try {
+      UserCredential result = await _auth.signInWithCredential(credential);
+      User user = result.user;
+      return _gratUserFromUser(user);
+
+    } catch (e){
+      print(e.toString());
+      return null;
+    }
+  }
+
 }

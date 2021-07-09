@@ -5,9 +5,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grat_app/components/rounded_btn.dart';
 import 'package:grat_app/screens/authenticate/create_account.dart';
-import 'package:grat_app/screens/success/success.dart';
+import 'package:grat_app/screens/home/home.dart';
+import 'package:grat_app/services/auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class Login extends StatefulWidget {
@@ -17,8 +19,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool showSpinner = false;
-  final _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final AuthService _auth = AuthService();
   String email;
   String password;
 
@@ -153,17 +154,7 @@ class _LoginState extends State<Login> {
                           showSpinner = true;
                         });
                         try {
-                          final user = await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
-                          if (user != null) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SuccessScreen()));
-                          }
-                          setState(() {
-                            showSpinner = false;
-                          });
+                          final user = await _auth.signInWithEmailAndPassword(email, password);
                         } catch (e) {
                           print(e);
                         }
@@ -176,6 +167,41 @@ class _LoginState extends State<Login> {
                   style: TextStyle(
                     color: Color(0xff14DAE2)
                   ),
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Center(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white,
+                      onPrimary: Colors.black,
+                      minimumSize: Size(120, 50),
+                    ),
+                    onPressed: () async {
+                      // Add login code
+                      setState(() {
+                        showSpinner = true;
+                      });
+                      try {
+                        final user = await _auth.signInWithGoogle();
+                        if (user != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
+                        }
+
+                      } catch (e) {
+                        print(e);
+                      }
+                      setState(() {
+                        showSpinner = false;
+                      });
+                    },
+                      icon: FaIcon(FontAwesomeIcons.google, color: Colors.red,),
+                      label: Text('Sign Up with Google'),
                   ),
                 ),
                 SizedBox(
